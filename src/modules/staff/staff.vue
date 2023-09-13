@@ -1,0 +1,269 @@
+<template>
+    <loading v-if="useStore.canShowLoading" />
+    <div class="w-full h-screen ">
+        <div class="flex justify-between">
+            <div class="text-gray-900 font-bold text-xl mb-2">
+                <p class="text-gray-900 font-semibold text-lg mb-2">{{ useStore.staffList ? useStore.staffList.length : 0 }} Employee</p>
+            </div>
+            <div class="mx-6 ">
+                <button  @click="visibleImport = true" class="mx-2">import</button>
+                <button @click="visibleRight = true">add</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-6 gap-4 my-3">
+            <div  v-for="(emp,index) in useStore.staffList ? useStore.staffList : []">
+                <employeeCard :source="emp" :index="index" />
+            </div>
+        </div>
+    </div>
+
+    <Sidebar v-model:visible="visibleRight" position="right" class="w-full">
+        <template #header>
+            <p class="absolute left-0 mx-4 font-semibold fs-5 ">Attendance Reports</p>
+        </template>
+
+        <!-- Content -->
+        <div class="w-full bg-grey-lightest">
+            <div class="container mx-auto py-8">
+                <div class="w-full  bg-white rounded ">
+                    <div class="profile-pic">
+                        <img class="forRounded" src="../../assets/vue.svg" srcset="" alt="" id="output" width="200" />
+                        <!-- <p v-else
+                                class="font-semibold text-5xl text-center flex items-center justify-center text-white forRounded"
+                                :class="[_instance_profilePagesStore.employeeDetails.short_name_Color ? _instance_profilePagesStore.employeeDetails.short_name_Color : '', _instance_profilePagesStore.employeeDetails.short_name_Color]">
+                                {{ _instance_profilePagesStore.employeeDetails.user_short_name }}
+                            </p> -->
+                        <label class="-label" for="file">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                            </svg>
+                            <!-- <span>Change</span> -->
+                        </label>
+                        <input id="file" type="file" @change="updateProfilePhoto($event)" />
+                    </div>
+                    <div class="py-4 px-4">
+                        <div class="flex mb-4">
+                            <div class="w-1/2 mr-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">First
+                                    Name</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="first_name" type="text" placeholder="Your first name"
+                                    v-model="useStore.createStaff.firstname">
+                            </div>
+                            <div class="w-1/2 ml-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="last_name">Last
+                                    Name</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="last_name" type="text" placeholder="Your last name"
+                                    v-model="useStore.createStaff.lastname">
+                            </div>
+                        </div>
+                        <div class="flex mb-4">
+                            <div class="w-1/2 mr-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">
+                                    Department</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="first_name" type="text" placeholder="Your department"
+                                    v-model="useStore.createStaff.department">
+                            </div>
+                            <div class="w-1/2 ml-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="last_name">
+                                    Date of hired</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="last_name" type="text" placeholder="Your date of hired"
+                                    v-model="useStore.createStaff.doj">
+                            </div>
+                        </div>
+                        <div class="flex mb-4">
+                            <div class="w-1/2 mr-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">
+                                    Email</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="first_name" type="text" placeholder="Your email"
+                                    v-model="useStore.createStaff.email">
+                            </div>
+                            <div class="w-1/2 ml-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="last_name">
+                                    Mobile number</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="last_name" type="text" placeholder="Your mobile number"
+                                    v-model="useStore.createStaff.mobileNumber">
+                            </div>
+                        </div>
+                        <div class="flex mb-4">
+                            <div class="w-1/2 mr-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">
+                                    Designation</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="first_name" type="text" placeholder="Your designation"
+                                    v-model="useStore.createStaff.designation">
+                            </div>
+                            <!-- <div class="w-1/2 ml-1">
+                                <label class="block text-grey-darker text-sm font-bold mb-2" for="last_name">
+                                    Mobile number</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                    id="last_name" type="text" placeholder="Your mobile number"
+                                    v-model="useStore.createStaff.mobileNumber">
+                            </div> -->
+                        </div>
+                        <div class="flex justify-end mx-4">
+                            <button @click="visibleRight = false,useStore.saveStaff(useStore.createStaff)">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Sidebar>
+
+    <Sidebar v-model:visible="visibleImport" position="right" class="w-full">
+        <template #header>
+            <p class="absolute left-0 mx-4 font-semibold fs-5 ">Import</p>
+        </template>
+        <div class="max-w-sm w-full lg:max-w-full ">
+            <div class="text-gray-900 font-bold text-xl mb-2">Can coffee make you a better developer?</div>
+            <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+        </div>
+        <div class="sm:max-w-lg w-full p-10 bg-white rounded-xl z-10 mx-auto">
+            <div class="text-center">
+                <h2 class="mt-5 text-3xl font-bold text-gray-900">
+                    File Upload!
+                </h2>
+                <p class="mt-2 text-sm text-gray-400">Lorem ipsum is placeholder text.</p>
+            </div>
+            <div class="grid grid-cols-1 space-y-2">
+                <label class="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
+                <div class="flex items-center justify-center w-full">
+                    <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+                        <div class="h-full w-full text-center flex flex-col items-center justify-center items-center  ">
+                            <!---<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>-->
+                            <div class="flex flex-auto max-h-48 w-2/5 mx-auto">
+                                <img class=" h-36 object-center"
+                                    src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg"
+                                    alt="freepik image">
+                            </div>
+                            <p class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files
+                                here <br /> or <a href="" id="" class="text-blue-600 hover:underline">select a
+                                    file</a> from your computer</p>
+                        </div>
+                        <input type="file" class="hidden">
+                    </label>
+                </div>
+            </div>
+            <p class="text-sm text-gray-300">
+                <span>File type: doc,pdf,types of images</span>
+            </p>
+            <div>
+                <button type="submit"
+                    class="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
+                                font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
+                    Upload
+                </button>
+            </div>
+        </div>
+
+    </Sidebar>
+</template>
+
+<script setup>
+import employeeCard from '../../components/employeeCard.vue';
+import loading from '../../components/loading.vue';
+import { ref,onMounted } from 'vue'
+import { staffMainStore } from './stores/staffMainStore'
+
+const useStore = staffMainStore()
+
+const visibleRight = ref(false)
+const visibleImport = ref(false)
+
+
+onMounted(() => {
+    useStore.getStaffList()
+})
+
+
+</script>
+
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Libre+Baskerville&family=Poppins&display=swap');
+* {
+    font-family: 'Inconsolata', monospace;
+    font-family: 'Libre Baskerville', serif;
+    font-family: 'Poppins', sans-serif;
+}
+
+.p-sidebar-right .p-sidebar {
+    width: 50% !important;
+    height: 100%;
+}
+
+@mixin object-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+$circleSize: 90px;
+$radius: 100px;
+$shadow: 0 0 10px 0 rgba(255, 255, 255, .35);
+$fontColor: rgb(250, 250, 250);
+
+.profile-pic {
+    color: transparent;
+    transition: all .3s ease;
+    @include object-center;
+    position: relative;
+    transition: all .3s ease;
+
+    input {
+        display: none;
+    }
+
+    .forRounded {
+        position: absolute;
+        object-fit: cover;
+        width: $circleSize;
+        height: $circleSize;
+        box-shadow: $shadow;
+        border-radius: $radius;
+        z-index: 0;
+    }
+
+    .-label {
+        cursor: pointer;
+        height: $circleSize;
+        width: $circleSize;
+    }
+
+    &:hover {
+        .-label {
+            @include object-center;
+            background-color: rgba(0, 0, 0, .8);
+            z-index: 10000;
+            color: $fontColor;
+            transition: background-color .2s ease-in-out;
+            border-radius: $radius;
+            margin-bottom: 0;
+        }
+    }
+
+    span {
+        display: inline-flex;
+        padding: .2em;
+        height: 2em;
+        font-size: 12px;
+    }
+}
+
+.has-mask {
+    position: absolute;
+    clip: rect(10px, 150px, 130px, 10px);
+}
+</style>

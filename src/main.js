@@ -100,7 +100,7 @@ import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
-// import router from './router';
+import router from './router';
 
 
 const app = createApp(App)
@@ -111,7 +111,7 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
 app.use(pinia);
-// app.use(router);
+app.use(router);
 
 
 app.directive('tooltip', Tooltip);

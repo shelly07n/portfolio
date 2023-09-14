@@ -10,7 +10,7 @@ export const staffMainStore = defineStore("staffMainStore", () => {
 
     const getStaffList = () => {
         canShowLoading.value = true
-        axios.get("http://localhost:3000/staff").then(res => {
+        axios.get("https://api-sheltonfdo23.b4a.run/staff").then(res => {
             console.log(res.data);
             staffList.value = res.data
         }).finally(()=>{
@@ -20,7 +20,7 @@ export const staffMainStore = defineStore("staffMainStore", () => {
 
     const saveStaff = (stafflist) => {
         console.log(stafflist);
-        axios.post("http://localhost:3000/staff", stafflist).finally(() => {
+        axios.post("https://api-sheltonfdo23.b4a.run/staff", stafflist).finally(() => {
             getStaffList()
         })
     }

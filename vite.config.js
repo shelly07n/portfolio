@@ -4,6 +4,11 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3001' // Proxy requests to JSON Server
+    }
+  },
   plugins: [vue()],
   resolve: {
     alias: {

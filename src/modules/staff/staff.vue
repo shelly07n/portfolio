@@ -32,7 +32,9 @@
             <div class="container mx-auto py-8">
                 <div class="w-full  bg-white rounded ">
                     <div class="profile-pic">
-                        <img class="forRounded" src="../../assets/vue.svg" srcset="" alt="" id="output" width="200" />
+                        <img class="forRounded"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDnAV2195eKjdsIWb9qODnuYgxUnwJ0exESA&usqp=CAU"
+                            srcset="" alt="" id="output" width="200" />
                         <!-- <p v-else
                                 class="font-semibold text-5xl text-center flex items-center justify-center text-white forRounded"
                                 :class="[_instance_profilePagesStore.employeeDetails.short_name_Color ? _instance_profilePagesStore.employeeDetails.short_name_Color : '', _instance_profilePagesStore.employeeDetails.short_name_Color]">
@@ -155,7 +157,8 @@
                                     alt="freepik image">
                             </div>
                             <p class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files
-                                here <br /> or <label for="file"  class="underline cursor-pointer text-blue-600 hover:underline">select a
+                                here <br /> or <label for="file"
+                                    class="underline cursor-pointer text-blue-600 hover:underline">select a
                                     file</label> from your computer</p>
                         </div>
                         <input type="file" id="file" class="hidden">

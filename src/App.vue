@@ -9,7 +9,7 @@
          <!-- Page Content -->
          <div class="bg-gray-100  text-gray-700 h-screen w-[100%] ">
             <topbar />
-            <div class="h-screen w-[100%]  p-2 mb-14  overflow-auto">
+            <div class="h-screen w-[100%]  p-2 pb-36 overflow-auto">
                <RouterView></RouterView>
             </div>
          </div>

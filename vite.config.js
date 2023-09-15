@@ -6,7 +6,7 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'http://localhost:3001' // Proxy requests to JSON Server
+      '/api': 'http://localhost:5000' // Proxy requests to JSON Server
     }
   },
   plugins: [vue()],

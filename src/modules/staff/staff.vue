@@ -1,18 +1,22 @@
 <template>
     <loading v-if="useStore.canShowLoading" />
-    <div class="w-full h-screen ">
-        <div class="flex justify-between">
+    <div class="w-full h-screen p-2">
+        <div class="flex justify-between items-center">
             <div class="text-gray-900 font-bold text-xl mb-2">
-                <p class="text-gray-900 font-semibold text-lg mb-2">{{ useStore.staffList ? useStore.staffList.length : 0 }} Employee</p>
+                <p class="text-gray-900 font-semibold text-xl mb-2">{{ useStore.staffList ? useStore.staffList.length : 0 }}
+                    Employee</p>
             </div>
             <div class="mx-6 ">
-                <button  @click="visibleImport = true" class="mx-2">import</button>
-                <button @click="visibleRight = true">add</button>
+                <button @click="visibleImport = true"
+                    class="h-10 px-5 text-indigo-700 transition-colors duration-150 border border-indigo-500 rounded-lg focus:shadow-outline hover:bg-indigo-500 hover:text-indigo-100">Import</button>
+                <button @click="visibleRight = true"
+                    class="h-10 px-5 m-2 text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800">Add
+                    staff</button>
             </div>
         </div>
 
         <div class="grid grid-cols-6 gap-4 my-3">
-            <div  v-for="(emp,index) in useStore.staffList ? useStore.staffList : []">
+            <div v-for="(emp, index) in useStore.staffList ? useStore.staffList : []">
                 <employeeCard :source="emp" :index="index" />
             </div>
         </div>
@@ -20,7 +24,7 @@
 
     <Sidebar v-model:visible="visibleRight" position="right" class="w-full">
         <template #header>
-            <p class="absolute left-0 mx-4 font-semibold fs-5 ">Attendance Reports</p>
+            <p class="absolute left-0 mx-4 font-semibold fs-5 ">New employee</p>
         </template>
 
         <!-- Content -->
@@ -112,7 +116,8 @@
                             </div> -->
                         </div>
                         <div class="flex justify-end mx-4">
-                            <button @click="visibleRight = false,useStore.saveStaff(useStore.createStaff)">Submit</button>
+                            <button @click="visibleRight = false, useStore.saveStaff(useStore.createStaff)"
+                                class="h-10 px-5 m-2 text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -150,10 +155,10 @@
                                     alt="freepik image">
                             </div>
                             <p class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files
-                                here <br /> or <a href="" id="" class="text-blue-600 hover:underline">select a
-                                    file</a> from your computer</p>
+                                here <br /> or <label for="file"  class="underline cursor-pointer text-blue-600 hover:underline">select a
+                                    file</label> from your computer</p>
                         </div>
-                        <input type="file" class="hidden">
+                        <input type="file" id="file" class="hidden">
                     </label>
                 </div>
             </div>
@@ -175,7 +180,7 @@
 <script setup>
 import employeeCard from '../../components/employeeCard.vue';
 import loading from '../../components/loading.vue';
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { staffMainStore } from './stores/staffMainStore'
 
 const useStore = staffMainStore()
@@ -193,6 +198,7 @@ onMounted(() => {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Libre+Baskerville&family=Poppins&display=swap');
+
 * {
     font-family: 'Inconsolata', monospace;
     font-family: 'Libre Baskerville', serif;
@@ -265,5 +271,4 @@ $fontColor: rgb(250, 250, 250);
 .has-mask {
     position: absolute;
     clip: rect(10px, 150px, 130px, 10px);
-}
-</style>
+}</style>

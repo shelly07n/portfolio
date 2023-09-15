@@ -13,6 +13,12 @@ const routes = [
     // meta: { requiresAuth: true }, // Protect this route
   },
   {
+    path: '/timeManagement',
+    name: 'timeManagement',
+    component: () => import('./modules/calendar/calendar.vue'),
+    // meta: { requiresAuth: true }, // Protect this route
+  },
+  {
     path: '/staff',
     name: 'staff',
     component: () => import('./modules/staff/staff.vue'),

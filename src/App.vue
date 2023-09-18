@@ -1,19 +1,6 @@
 <template>
    <div id="app">
-      <!--Sidebar with Dimmer -->
-      <div class="flex flex-row h-screen fixed w-screen">
-         <!-- Sidebar -->
-         <div>
-            <sidebar />
-         </div>
-         <!-- Page Content -->
-         <div class="bg-gray-100  text-gray-700 h-screen w-[100%] ">
-            <topbar />
-            <div class="h-screen w-[100%]  p-2 pb-36 overflow-auto">
-               <RouterView></RouterView>
-            </div>
-         </div>
-      </div>
+      <RouterView></RouterView>
    </div>
 </template>
 

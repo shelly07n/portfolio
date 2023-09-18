@@ -1,5 +1,5 @@
 <template>
-    <loading v-if="useStore.canShowLoading" />
+    <!-- <loading v-if="useStore.canShowLoading" /> -->
     <div class="w-full h-screen p-2">
         <div class="flex justify-between items-center">
             <div class="text-gray-900 font-bold text-xl mb-2">
@@ -9,18 +9,25 @@
             <div class="mx-6 ">
                 <button @click="visibleImport = true"
                     class="h-10 px-5 text-indigo-700 transition-colors duration-150 border border-indigo-500 rounded-lg focus:shadow-outline hover:bg-indigo-500 hover:text-indigo-100">Import</button>
+                <button @click="useHelper.generateSampleExcel(useStore.staffList, `export_file_${new Date()}`)"
+                    class="h-10 px-5 mx-2 text-indigo-700 transition-colors duration-150 border border-indigo-500 rounded-lg focus:shadow-outline hover:bg-indigo-500 hover:text-indigo-100">Export</button>
                 <button @click="visibleRight = true"
                     class="h-10 px-5 m-2 text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800">Add
                     staff</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-6 gap-4 my-3">
+        <div class="grid grid-cols-6 gap-4 my-3" v-if="useStore.staffList.length > 0">
             <div v-for="(emp, index) in useStore.staffList ? useStore.staffList : []">
                 <employeeCard :source="emp" :index="index" />
             </div>
         </div>
+        <div v-else class="w-10/12 h-4/5 border mx-auto rounded-lg">
+            <img src="../../assets/empty-box.svg" alt=""  class="w-full h-full">
+        </div>
+
     </div>
+
 
     <Sidebar v-model:visible="visibleRight" position="right" class="w-full">
         <template #header>
@@ -132,13 +139,16 @@
             <p class="absolute left-0 mx-4 font-semibold fs-5 ">Import</p>
         </template>
         <div class="max-w-sm w-full lg:max-w-full ">
-            <div class="text-gray-900 font-bold text-xl mb-2">Can coffee make you a better developer?</div>
-            <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+            <div class="text-gray-900 font-bold text-lg ">Can coffee make you a better developer?</div>
+            <p class="text-gray-700 text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium <button
+                    @click="useHelper.generateSampleExcel(sample,`sample_${new Date()}`)"
+                    class="underline cursor-pointer text-blue-600 hover:underline">download a sample
+                    file here</button> .</p>
         </div>
-        <div class="sm:max-w-lg w-full p-10 bg-white rounded-xl z-10 mx-auto">
+        <div class="sm:max-w-lg w-full p-4 bg-white rounded-xl z-10 mx-auto">
             <div class="text-center">
-                <h2 class="mt-5 text-3xl font-bold text-gray-900">
+                <h2 class="mt-5 text-2xl font-bold text-gray-900">
                     File Upload!
                 </h2>
                 <p class="mt-2 text-sm text-gray-400">Lorem ipsum is placeholder text.</p>
@@ -146,7 +156,7 @@
             <div class="grid grid-cols-1 space-y-2">
                 <label class="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
                 <div class="flex items-center justify-center w-full">
-                    <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+                    <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-8 group text-center">
                         <div class="h-full w-full text-center flex flex-col items-center justify-center items-center  ">
                             <!---<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -156,12 +166,15 @@
                                     src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg"
                                     alt="freepik image">
                             </div>
-                            <p class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files
+                            <p class="border p-1.5 rounded-lg font-medium px-3 text-sm" v-if="useStore.selectedFile">
+                                {{ useStore.selectedFile.name }}
+                            </p>
+                            <p v-else class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files
                                 here <br /> or <label for="file"
                                     class="underline cursor-pointer text-blue-600 hover:underline">select a
                                     file</label> from your computer</p>
                         </div>
-                        <input type="file" id="file" class="hidden">
+                        <input type="file" id="file" class="hidden" @change="useStore.handleFileChange">
                     </label>
                 </div>
             </div>
@@ -169,7 +182,7 @@
                 <span>File type: doc,pdf,types of images</span>
             </p>
             <div>
-                <button type="submit"
+                <button @click="useStore.generateFile(), visibleImport = false"
                     class="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
                                 font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
                     Upload
@@ -185,16 +198,31 @@ import employeeCard from '../../components/employeeCard.vue';
 import loading from '../../components/loading.vue';
 import { ref, onMounted } from 'vue'
 import { staffMainStore } from './stores/staffMainStore'
+import { helperMainStore } from '../../helpers/helperMainService';
+
+
 
 const useStore = staffMainStore()
+const useHelper = helperMainStore()
 
 const visibleRight = ref(false)
 const visibleImport = ref(false)
 
 
+// Define sample data
+const sample = [
+    { firstname: 'asasd', lastname: 'asasd', department: 'asasd', doj: 'asasd', email: 'asasd', mobileNumber: 'asasd', designation: 'asasd', status: 'asasd', },
+    { firstname: 'asdf', lastname: 'asasd', department: 'asasd', doj: 'asasd', email: 'asasd', mobileNumber: 'asasd', designation: 'asasd', status: 'asasd', },
+    { firstname: 'asfasf', lastname: 'asasd', department: 'asasd', doj: 'asasd', email: 'asasd', mobileNumber: 'asasd', designation: 'asasd', status: 'asasd', },
+    { firstname: 'asffas', lastname: 'asasd', department: 'asasd', doj: 'asasd', email: 'asasd', mobileNumber: 'asasd', designation: 'asasd', status: 'asasd', },
+];
+
+
+
 onMounted(() => {
-    useStore.getStaffList()
+    // useStore.getStaffList()
 })
+
 
 
 </script>
@@ -209,7 +237,7 @@ onMounted(() => {
 }
 
 .p-sidebar-right .p-sidebar {
-    width: 50% !important;
+    width: 55% !important;
     height: 100%;
 }
 
@@ -274,4 +302,5 @@ $fontColor: rgb(250, 250, 250);
 .has-mask {
     position: absolute;
     clip: rect(10px, 150px, 130px, 10px);
-}</style>
+}
+</style>

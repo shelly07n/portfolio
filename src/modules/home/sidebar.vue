@@ -30,15 +30,16 @@
             </li>
 
             <li class="hover:bg-gray-100">
-                <RouterLink to="/timeManagement" class="h-16 px-6 flex flex justify-center items-center w-full
+                <RouterLink to="eventManagement" class="h-16 px-6 flex flex justify-center items-center w-full
                         focus:text-orange-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33" />
-                      </svg>
-                      
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                          </svg>
+                          
+
 
                 </RouterLink>
-                
+
             </li>
 
             <li class="hover:bg-gray-100">
@@ -54,7 +55,7 @@
             </li>
 
             <li class="hover:bg-gray-100">
-                <a href="." class="h-16 px-6 flex flex justify-center items-center w-full
+                <RouterLink to="leads" class="h-16 px-6 flex flex justify-center items-center w-full
                         focus:text-orange-500">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -64,11 +65,11 @@
                                 2-1.61L23 6H6"></path>
                     </svg>
 
-                </a>
+                </RouterLink>
             </li>
 
             <li class="hover:bg-gray-100">
-                <a href="." class="h-16 px-6 flex flex justify-center items-center w-full
+                <RouterLink to="comingsoon" class="h-16 px-6 flex flex justify-center items-center w-full
                         focus:text-orange-500">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -89,25 +90,26 @@
                                 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65
                                 1.65 0 0 0-1.51 1z"></path>
                     </svg>
-                </a>
+                </RouterLink>
             </li>
 
             <li class="hover:bg-gray-100">
-                <a href="." class="h-16 px-6 flex flex justify-center items-center w-full
+                <RouterLink to="comingsoon" class="h-16 px-6 flex flex justify-center items-center w-full
                         focus:text-orange-500">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
-                </a>
+                </RouterLink>
             </li>
 
         </ul>
 
         <div class="mt-auto h-16 flex items-center w-full">
             <!-- Action Section -->
-            <button class="h-16 w-10 mx-auto flex flex justify-center items-center
+            <button @click="logout"
+             class="h-16 w-10 mx-auto flex flex justify-center items-center
                     w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none">
                 <svg class="h-5 w-5 text-red-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -120,4 +122,13 @@
             </button>
         </div>
 
-</aside></template>
+</aside>
+</template>
+
+
+<script setup>
+const logout = () =>{
+    localStorage.removeItem("access_token")
+    window.location.reload()
+}
+</script>

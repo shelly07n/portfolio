@@ -5,36 +5,73 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('./modules/login/login.vue'),
+    meta: { requiresAuth: false },
   },
   {
     path: '/',
-    name: 'Dashboard',
+    name: 'home',
     component: () => import('./modules/home/home.vue'),
-    // meta: { requiresAuth: true }, // Protect this route
+    children: [
+      // Define your other routes here
+      {
+        path: '/',
+        name: 'dashboard',
+        // component: () => import('./modules/dashboard/dashboard.vue'),
+        component: () => import('./components/comingsoon.vue'),
+      },
+      {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('./modules/profile/profile.vue'),
+      },
+      {
+        path: '/eventManagement',
+        name: 'eventManagement',
+        component: () => import('./modules/calendar/calendar.vue'),
+        // meta: { requiresAuth: true }, // Protect this route
+      },
+      {
+        path: '/staff',
+        name: 'staff',
+        component: () => import('./modules/staff/staff.vue'),
+      },
+      {
+        path: '/leads',
+        name: 'leads',
+        component: () => import('./modules/leads/leads.vue'),
+      },
+      {
+        path: '/comingsoon',
+        name: 'comingsoon',
+        component: () => import('./components/comingsoon.vue'),
+      },
+      // Other routes go here
+    ],
+    meta: { requiresAuth: true }, // Protect this route
   },
-  {
-    path: '/timeManagement',
-    name: 'timeManagement',
-    component: () => import('./modules/calendar/calendar.vue'),
-    // meta: { requiresAuth: true }, // Protect this route
-  },
-  {
-    path: '/staff',
-    name: 'staff',
-    component: () => import('./modules/staff/staff.vue'),
-  },
+
 ];
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
+
+// Global navigation guard
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('access_token');
-  if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
-    // Redirect to login if the route requires authentication and there's no token
-    next('/login');
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Check if the user is authenticated by validating the access_token
+    const accessToken = localStorage.getItem('access_token'); // Retrieve the access_token from local storage (you can use cookies or a different storage mechanism)
+
+    if (!accessToken) {
+      // If the access_token is not present, redirect to the login page
+      next('/login');
+    } else {
+      // User is authenticated, proceed to the requested route
+      next();
+    }
   } else {
+    // For routes that don't require authentication, proceed
     next();
   }
 });
